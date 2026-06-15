@@ -251,7 +251,7 @@ const STAPLES=[
   {n:"Bacon de pavo (3 lonchas)",kcal:60,p:9,c:0,f:3,fib:0},
   {n:"MyProtein Impact Whey (1 scoop)",kcal:100,p:23,c:1,f:1,fib:0},
   {n:"Yogur griego Oikos natural (1)",kcal:75,p:9,c:4,f:2,fib:0},
-  {n:"Cottage cheese (150g)",kcal:145,p:16,c:5,f:6,fib:0},
+  {n:"Queso cottage (150g)",kcal:145,p:16,c:5,f:6,fib:0},
   {n:"Kimchi (2-3 cdas)",kcal:18,p:1,c:4,f:0,fib:1},
   {n:"Chucrut sin pasteurizar (2-3 cdas)",kcal:15,p:1,c:3,f:0,fib:2},
   {n:"Kombucha Mūn/Komvida (1 vaso)",kcal:30,p:0,c:7,f:0,fib:0},
@@ -265,8 +265,8 @@ const STAPLES=[
   {n:"Garbanzos cocidos (1/2 taza)",kcal:110,p:6,c:18,f:2,fib:5},
   {n:"Maíz dulce (1/2 taza)",kcal:65,p:2,c:15,f:1,fib:2},
   {n:"Brócoli asado (1 taza)",kcal:30,p:3,c:6,f:0,fib:3},
-  {n:"Judía verde plana (1 taza)",kcal:35,p:2,c:7,f:0,fib:4},
-  {n:"Guisantes (1/2 taza)",kcal:60,p:4,c:11,f:0,fib:4},
+  {n:"Chaucha (1 taza)",kcal:35,p:2,c:7,f:0,fib:4},
+  {n:"Arvejas (1/2 taza)",kcal:60,p:4,c:11,f:0,fib:4},
   {n:"Espinaca baby (2 tazas)",kcal:14,p:2,c:2,f:0,fib:2},
   {n:"Mezcla baby / brotes tiernos (2 tazas)",kcal:15,p:2,c:2,f:0,fib:1},
   {n:"Zanahoria asada (1 taza)",kcal:35,p:1,c:8,f:0,fib:2},
@@ -284,36 +284,44 @@ const STAPLES=[
   {n:"Gochujang (1 cdta)",kcal:15,p:0,c:3,f:0,fib:0},
   {n:"Mostaza Dijon (1 cda)",kcal:15,p:1,c:1,f:1,fib:0},
   {n:"Tahini (1 cda)",kcal:89,p:3,c:3,f:8,fib:1},
-  {n:"Aceite de oliva (1 cda)",kcal:120,p:0,c:0,f:14,fib:0}
+  {n:"Aceite de oliva (1 cda)",kcal:120,p:0,c:0,f:14,fib:0},
+  {n:"Tosta MM: queso cottage + tomate",kcal:228,p:16,c:27,f:5,fib:3},
+  {n:"Tosta PP: atún + yogur + pepino",kcal:159,p:20,c:10,f:4,fib:4},
+  {n:"Tosta MM: cottage batido + frutillas",kcal:222,p:14,c:31,f:4,fib:4},
+  {n:"Tosta PP: huevo duro + palta",kcal:227,p:15,c:11,f:13,fib:6},
+  {n:"Tosta MM: salmón ahumado + untable",kcal:221,p:15,c:23,f:7,fib:2},
+  {n:"Tosta PP: pavo + tomate + mostaza",kcal:163,p:18,c:12,f:4,fib:4},
+  {n:"Tosta MM: cottage + arándanos + canela",kcal:238,p:15,c:30,f:5,fib:3},
+  {n:"Tosta PP: hummus + huevo duro",kcal:247,p:17,c:14,f:13,fib:5}
 ];
 const M=(n,kcal,p,c,f,fib)=>({n,kcal,p,c,f,fib});
 const MEAL_TIMES={Comida:"12:00 · rompe ayuno",Snack:"16:30",Cena:"19:30"};
 // Menú guía por día de la semana (0=Dom .. 6=Sáb)
 const BASE={
   1:{
-    Comida:[M("Pechuga de pollo air fryer (220g)",242,46,0,4,0),M("Boniato air fryer (150g)",130,2,30,0,4),M("Espinaca baby (3 tazas)",21,3,3,0,3),M("Yogur griego Oikos (1)",75,9,4,2,0),M("Guisantes (1/2 taza)",60,4,11,0,4),M("Jengibre rallado + lima",5,0,1,0,0)],
+    Comida:[M("Pechuga de pollo air fryer (220g)",242,46,0,4,0),M("Boniato air fryer (150g)",130,2,30,0,4),M("Espinaca baby (3 tazas)",21,3,3,0,3),M("Yogur griego para marinar (1-2 cdas)",17,2,1,0,0),M("Arvejas (1/2 taza)",60,4,11,0,4),M("Jengibre rallado + lima",5,0,1,0,0)],
     Snack:[M("Yogur griego Oikos (1)",75,9,4,2,0),M("Semillas de lino molidas (1½ cda)",56,2,3,5,5),M("Arándanos (1/2 taza)",42,1,11,0,2),M("MyProtein whey (3/4 scoop)",75,17,1,1,0),M("Fresas (1/2 taza)",24,1,6,0,2)],
-    Cena:[M("Salmón (lomo ~140g, air fryer)",257,28,0,16,0),M("Brócoli asado air fryer (2 tazas)",60,6,12,0,6),M("Zanahoria asada air fryer (1 taza)",35,1,8,0,2),M("Guisantes (1/2 taza)",60,4,11,0,4),M("Mostaza Dijon (1 cda)",15,1,1,1,0),M("Chucrut sin pasteurizar (2-3 cdas)",15,1,3,0,2)]
+    Cena:[M("Salmón (lomo ~140g, air fryer)",257,28,0,16,0),M("Brócoli asado air fryer (2 tazas)",60,6,12,0,6),M("Zanahoria asada air fryer (1 taza)",35,1,8,0,2),M("Arvejas (1/2 taza)",60,4,11,0,4),M("Mostaza Dijon (1 cda)",15,1,1,1,0),M("Chucrut sin pasteurizar (2-3 cdas)",15,1,3,0,2)]
   },
   2:{
-    Comida:[M("Tortillas de maíz (2)",120,4,24,2,4),M("Pechuga de pollo air fryer (180g)",198,38,0,4,0),M("Bacon de pavo (3 lonchas)",60,9,0,3,0),M("Tomate raf (1)",22,1,5,0,1),M("Mezcla baby (brotes tiernos, 2 tazas)",15,2,2,0,1),M("Yogur griego como 'mayo' (2 cda)",30,4,2,1,0),M("Guisantes (1/2 taza)",60,4,11,0,4)],
+    Comida:[M("Tortillas de maíz (2)",120,4,24,2,4),M("Pechuga de pollo air fryer (180g)",198,38,0,4,0),M("Bacon de pavo (3 lonchas)",60,9,0,3,0),M("Tomate raf (1)",22,1,5,0,1),M("Mezcla baby (brotes tiernos, 2 tazas)",15,2,2,0,1),M("Yogur griego como 'mayo' (2 cda)",30,4,2,1,0),M("Arvejas (1/2 taza)",60,4,11,0,4)],
     Snack:[M("MyProtein whey (1¼ scoop)",125,29,1,1,0),M("Espinaca baby salteada (2 tazas)",14,2,2,0,2),M("Fresas (1 taza)",48,1,11,0,3),M("Semillas de lino molidas (1 cda)",37,1,2,3,3)],
     Cena:[M("Sardinas de lata, escurridas (1 lata)",175,18,0,11,0),M("Pan de masa madre (1 reb)",120,4,22,1,2),M("Tomate raf (1)",22,1,5,0,1),M("MyProtein whey (3/4 scoop)",75,17,1,1,0),M("Chucrut sin pasteurizar (2-3 cdas)",15,1,3,0,2)]
   },
   3:{
     Comida:[M("Bonito del norte (2 latas)",220,46,0,4,0),M("Garbanzos cocidos (2/3 taza)",145,8,24,3,7),M("Tomate raf (1)",22,1,5,0,1),M("Aceite de oliva (1 cdta)",40,0,0,5,0),M("Mezcla baby (brotes tiernos, 2 tazas)",15,2,2,0,1)],
-    Snack:[M("Cottage cheese (200g)",193,21,7,8,0),M("Pan de masa madre (1 reb)",120,4,22,1,2),M("Tomate raf (1)",22,1,5,0,1),M("Fresas (1 taza)",48,1,11,0,3)],
+    Snack:[M("Tosta MM: queso cottage + tomate",228,16,27,5,3),M("Yogur griego Oikos (1)",75,9,4,2,0),M("Fresas (1 taza)",48,1,11,0,3)],
     Cena:[M("Pechuga de pollo air fryer (200g)",220,42,0,4,0),M("Boniato air fryer (150g)",130,2,30,0,4),M("Kimchi (2-3 cdas)",18,1,4,0,1),M("Sésamo + toque gochujang",52,2,2,4,1),M("Brócoli asado air fryer (1½ tazas)",45,5,9,0,5)]
   },
   4:{
-    Comida:[M("Salmón (lomo ~140g, air fryer)",257,28,0,16,0),M("Boniato air fryer (150g)",130,2,30,0,4),M("Espinaca baby (3 tazas)",21,3,3,0,3),M("Sésamo + salsa teriyaki ligera",52,2,2,4,1),M("Guisantes (1/2 taza)",60,4,11,0,4),M("Semillas de lino molidas (1 cda)",37,1,2,3,3)],
+    Comida:[M("Salmón (lomo ~140g, air fryer)",257,28,0,16,0),M("Boniato air fryer (150g)",130,2,30,0,4),M("Espinaca baby (3 tazas)",21,3,3,0,3),M("Sésamo + salsa teriyaki ligera",52,2,2,4,1),M("Arvejas (1/2 taza)",60,4,11,0,4),M("Semillas de lino molidas (1 cda)",37,1,2,3,3)],
     Snack:[M("3 huevos duros",216,18,0,15,0),M("Atún claro (1/2 lata)",45,10,0,1,0),M("Yogur griego como 'mayo' (2 cda)",30,4,2,1,0),M("Zanahoria asada air fryer (1 taza)",35,1,8,0,2)],
     Cena:[M("Tortillas de maíz (2)",120,4,24,2,4),M("Pechuga de pollo air fryer (200g)",220,42,0,4,0),M("Piña en cubos (1/4 taza)",20,0,5,0,1),M("Yogur griego como 'mayo' (2 cda)",30,4,2,1,0),M("Aguacate (1/2)",120,1,6,11,5),M("Mezcla baby (brotes tiernos, 1 taza)",8,1,1,0,1)]
   },
   5:{
     Comida:[M("Tortillas de maíz (2)",120,4,24,2,4),M("Pechuga de pollo air fryer (200g)",220,42,0,4,0),M("Piña en cubos (1/4 taza)",20,0,5,0,1),M("Yogur griego como 'mayo' (2 cda)",30,4,2,1,0),M("Aguacate (1/2)",120,1,6,11,5),M("Mezcla baby (brotes tiernos, 1 taza)",8,1,1,0,1)],
-    Snack:[M("MyProtein whey (1¼ scoop)",125,29,1,1,0),M("Espinaca baby salteada (2 tazas)",14,2,2,0,2),M("Fresas (1 taza)",48,1,11,0,3),M("Semillas de lino molidas (1 cda)",37,1,2,3,3)],
-    Cena:[M("Pechuga de pollo air fryer (220g)",242,46,0,4,0),M("Boniato air fryer (150g)",130,2,30,0,4),M("Espinaca baby (3 tazas)",21,3,3,0,3),M("Yogur griego Oikos (1)",75,9,4,2,0),M("Guisantes (1/2 taza)",60,4,11,0,4),M("Jengibre rallado + lima",5,0,1,0,0)]
+    Snack:[M("Tosta PP: pavo + tomate + mostaza",163,18,12,4,4),M("Yogur griego Oikos (1)",75,9,4,2,0),M("Arándanos (1/2 taza)",42,1,11,0,2)],
+    Cena:[M("Pechuga de pollo air fryer (220g)",242,46,0,4,0),M("Boniato air fryer (150g)",130,2,30,0,4),M("Espinaca baby (3 tazas)",21,3,3,0,3),M("Yogur griego para marinar (1-2 cdas)",17,2,1,0,0),M("Arvejas (1/2 taza)",60,4,11,0,4),M("Jengibre rallado + lima",5,0,1,0,0)]
   },
   6:{
     Comida:[M("3 huevos + 3 claras",267,30,0,15,0),M("Boniato air fryer (120g)",104,2,24,0,3),M("Aceite de oliva (1 cdta)",40,0,0,5,0),M("Brócoli asado air fryer (1 taza)",30,3,6,0,3),M("Tomate raf (1)",22,1,5,0,1)],
@@ -516,7 +524,7 @@ function chatSys(){
   let menu="día libre";
   if(state!=="free")menu=["Comida","Snack","Cena"].map(m=>m+": "+state[m].map(i=>i.n+(i.on?" ✓":"")).join(", ")).join(" | ");
   const wd=viewDate.getDay();
-  return `Eres el coach de nutrición de Mayte dentro de su app de tracking. Hablá en español neutro, cercano, conciso y directo. Objetivos diarios: ${GOAL.kcal} kcal, ${GOAL.protein}g proteína (mínimo), ${GOAL.fiber}g fibra. Plan: ayuno 16/8 (12:00-20:00), recomposición, enfoque anti-bloating y salud intestinal, sin rúcula ni lechuga (usa mezcla baby/brotes tiernos), fermentados bienvenidos en porción chica (chucrut, kimchi, kombucha). Día visto: ${DAY_FULL[wd]} ${viewDate.getDate()} de ${MONTHS[viewDate.getMonth()]}.
+  return `Eres el coach de nutrición de Mayte dentro de su app de tracking. Hablá en español argentino (voseo: vos, tenés, comiste, querés), cercano, conciso y directo. Usá términos argentinos: arvejas (no guisantes), chaucha (no judía verde), queso cottage. Objetivos diarios: ${GOAL.kcal} kcal, ${GOAL.protein}g proteína (mínimo), ${GOAL.fiber}g fibra. Plan: ayuno 16/8 (12:00-20:00), recomposición, enfoque anti-bloating y salud intestinal, sin rúcula ni lechuga (usa mezcla baby/brotes tiernos), fermentados bienvenidos en porción chica (chucrut, kimchi, kombucha). Día visto: ${DAY_FULL[wd]} ${viewDate.getDate()} de ${MONTHS[viewDate.getMonth()]}.
 Lo ya REGISTRADO (marcado ✓) suma: ${t.kcal} kcal, ${t.protein}g proteína, ${t.carbs}g carbos, ${t.fat}g grasa, ${t.fiber}g fibra.
 Menú guía de hoy (✓ = ya comido): ${menu}.
 Si Mayte dice que comió algo, registralo. Para registrar, incluí al final un bloque EXACTO así:
@@ -584,7 +592,7 @@ function catOf(name){
   const n=name.toLowerCase();
   if(/pollo|atún|atun|bonito|sardina|calamar|salmón|salmon|merluza|huevo|clara|pavo|whey|bacon/.test(n))return "Proteínas";
   if(/yogur|oikos|cottage|queso|kombucha|kimchi|chucrut/.test(n))return "Lácteos y fermentados";
-  if(/brócoli|brocoli|judía|judia|guisante|espinaca|baby|brote|tomate|aguacate|maíz|maiz|remolacha|batata|boniato|zanahoria|pepino|piña|pina/.test(n))return "Verduras y frutas";
+  if(/brócoli|brocoli|chaucha|arveja|guisante|espinaca|baby|brote|tomate|aguacate|maíz|maiz|remolacha|batata|boniato|zanahoria|pepino|piña|pina/.test(n))return "Verduras y frutas";
   if(/fresa|arándano|arandano|lino/.test(n))return "Verduras y frutas";
   if(/pan|tortilla|masa madre|arroz|garbanzo/.test(n))return "Panes y cereales";
   if(/aceite|teriyaki|gochujang|mostaza|tahini|sésamo|sesamo/.test(n))return "Despensa";
