@@ -130,9 +130,45 @@
   .chat-in input:focus{outline:none;border-color:var(--blue)}
   .chat-in button{border:none;background:var(--blue);color:#fff;width:38px;height:38px;border-radius:50%;font-size:18px;cursor:pointer;flex:0 0 auto}
   .chat-in button:disabled{opacity:.4}
+
+  /* Tab bar */
+  .tabbar{position:fixed;left:0;right:0;bottom:0;z-index:30;background:rgba(249,249,249,.92);backdrop-filter:saturate(180%) blur(20px);-webkit-backdrop-filter:saturate(180%) blur(20px);border-top:.5px solid var(--sep);display:flex;max-width:500px;margin:0 auto;padding:6px 0 max(6px,env(safe-area-inset-bottom))}
+  .tabbar button{flex:1;background:none;border:none;display:flex;flex-direction:column;align-items:center;gap:2px;padding:5px 0;cursor:pointer;color:var(--muted)}
+  .tabbar button.active{color:var(--blue)}
+  .tabbar .tb-ic{font-size:22px;line-height:1}
+  .tabbar .tb-lb{font-size:10px;font-weight:600;letter-spacing:.01em}
+  .view{display:none}
+  .view.active{display:block}
+
+  /* Shopping / Notes */
+  .sec-head{padding:16px 16px 6px;max-width:500px;margin:0 auto}
+  .sec-head h1{font-size:34px;font-weight:700;letter-spacing:-.02em}
+  .gen-btn{width:100%;border:none;background:var(--blue);color:#fff;padding:13px;border-radius:14px;font-size:15px;font-weight:600;cursor:pointer;margin:6px 0 12px}
+  .gen-btn:active{opacity:.85}
+  .add-inline{display:flex;gap:8px;margin-bottom:14px}
+  .add-inline input{flex:1;padding:12px 14px;border:none;border-radius:12px;font-size:16px;background:var(--card);font-family:var(--sans)}
+  .add-inline input:focus{outline:none}
+  .add-inline button{border:none;background:var(--green);color:#fff;width:46px;border-radius:12px;font-size:22px;cursor:pointer}
+  .shop-group{background:var(--card);border-radius:16px;overflow:hidden;margin-bottom:14px}
+  .shop-cat{font-size:12px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.04em;padding:12px 16px 6px}
+  .shop-item{display:flex;align-items:center;gap:12px;padding:11px 16px;position:relative;cursor:pointer}
+  .shop-item:not(:last-child)::after{content:"";position:absolute;left:50px;right:0;bottom:0;height:.5px;background:var(--sep)}
+  .shop-item.done .shop-name{text-decoration:line-through;color:var(--muted)}
+  .shop-chk{flex:0 0 auto;width:24px;height:24px;border-radius:50%;border:2px solid #C7C7CC;display:flex;align-items:center;justify-content:center;transition:.12s}
+  .shop-chk.on{background:var(--green);border-color:var(--green)}
+  .shop-chk.on::after{content:"✓";color:#fff;font-size:14px;font-weight:700}
+  .shop-name{flex:1;font-size:15px}
+  .shop-del{border:none;background:transparent;color:#C7C7CC;width:28px;height:28px;font-size:20px;cursor:pointer}
+  .empty{text-align:center;color:var(--muted);font-size:14px;padding:40px 20px}
+  .notes-area{width:100%;min-height:340px;border:none;border-radius:16px;background:var(--card);padding:16px;font-size:16px;font-family:var(--sans);line-height:1.5;resize:vertical}
+  .notes-area:focus{outline:none}
+  .saved-tag{font-size:12px;color:var(--green);font-weight:600;text-align:center;margin-top:8px;opacity:0;transition:.2s}
+  .saved-tag.show{opacity:1}
 </style>
 </head>
 <body>
+<!-- ===== MENU VIEW ===== -->
+<div class="view active" id="view-menu">
 <header>
   <div class="h-sub">Recomposición · Ayuno 16/8 · 12:00–20:00</div>
   <h1>Mi menú</h1>
@@ -150,7 +186,39 @@
   <div id="meals"></div>
   <button class="reset" id="resetBtn">Vaciar lo registrado de este día</button>
 </div>
+</div>
+
+<!-- ===== SHOPPING VIEW ===== -->
+<div class="view" id="view-shop">
+<div class="sec-head"><h1>Compras</h1></div>
+<div class="wrap">
+  <button class="gen-btn" id="genShop">↻ Generar desde el menú de la semana</button>
+  <div class="add-inline">
+    <input id="shopInp" placeholder="Agregar a mano…">
+    <button id="shopAdd">+</button>
+  </div>
+  <div id="shopList"></div>
+</div>
+</div>
+
+<!-- ===== NOTES VIEW ===== -->
+<div class="view" id="view-notes">
+<div class="sec-head"><h1>Notas</h1></div>
+<div class="wrap">
+  <textarea class="notes-area" id="notesArea" placeholder="Escribí lo que quieras: ideas de comidas, recordatorios, lo que te cayó pesado, lo que querés agregar al plan…"></textarea>
+  <div class="saved-tag" id="savedTag">Guardado ✓</div>
+</div>
+</div>
+
 <button class="fab" id="fab">💬</button>
+
+<!-- ===== TAB BAR ===== -->
+<nav class="tabbar">
+  <button class="active" data-view="menu"><span class="tb-ic">🍽️</span><span class="tb-lb">Menú</span></button>
+  <button data-view="shop"><span class="tb-ic">🛒</span><span class="tb-lb">Compras</span></button>
+  <button data-view="notes"><span class="tb-ic">📝</span><span class="tb-lb">Notas</span></button>
+</nav>
+
 <div class="scrim" id="scrim"></div>
 <div class="sheet" id="sheet">
   <div class="sheet-grip"></div>
@@ -269,8 +337,8 @@ function renderDate(){
   const wd=viewDate.getDay();
   $("dateDay").innerHTML=DAY_FULL[wd]+(isToday(viewDate)?'<span class="today-pill">HOY</span>':'');
   $("dateFull").textContent=viewDate.getDate()+" de "+MONTHS[viewDate.getMonth()]+" "+viewDate.getFullYear();
-  // no navegar al futuro más allá de hoy
-  $("nextDay").disabled=isToday(viewDate);
+  // se puede navegar a días futuros para planificar
+  $("nextDay").disabled=false;
 }
 function totals(){
   const t={kcal:0,protein:0,carbs:0,fat:0,fiber:0};
@@ -328,7 +396,7 @@ function render(){renderDate();renderDash();renderMeals();persist(viewDate,state
 
 /* ---------- DATE NAV ---------- */
 $("prevDay").onclick=()=>{viewDate.setDate(viewDate.getDate()-1);state=dayState(viewDate);render()};
-$("nextDay").onclick=()=>{if(isToday(viewDate))return;viewDate.setDate(viewDate.getDate()+1);state=dayState(viewDate);render()};
+$("nextDay").onclick=()=>{viewDate.setDate(viewDate.getDate()+1);state=dayState(viewDate);render()};
 $("dateCenter").onclick=()=>{viewDate=new Date(today);state=dayState(viewDate);render()};
 
 /* ---------- ITEM INTERACTIONS ---------- */
@@ -467,6 +535,102 @@ $("chatInp").addEventListener("keydown",e=>{if(e.key==="Enter")sendChat($("chatI
 const CHIPS=["¿Cómo voy de proteína?","Comí un yogur griego","¿Puedo comer chocolate?","¿Qué me falta hoy?"];
 $("chips").innerHTML=CHIPS.map(c=>`<button class="chip">${c}</button>`).join("");
 $("chips").addEventListener("click",e=>{if(e.target.classList.contains("chip"))sendChat(e.target.textContent)});
+
+/* ---------- TABS ---------- */
+document.querySelector(".tabbar").addEventListener("click",e=>{
+  const btn=e.target.closest("[data-view]");if(!btn)return;
+  const v=btn.dataset.view;
+  document.querySelectorAll(".tabbar button").forEach(b=>b.classList.toggle("active",b===btn));
+  document.querySelectorAll(".view").forEach(el=>el.classList.toggle("active",el.id==="view-"+v));
+  // el chat (fab) solo tiene sentido en menú, pero lo dejamos visible siempre
+  if(v==="shop")renderShop();
+  if(v==="notes")loadNotes();
+});
+
+/* ---------- SHOPPING ---------- */
+const SHOP_KEY="mayte_shop_v1";
+function loadShop(){try{return JSON.parse(localStorage.getItem(SHOP_KEY))||[]}catch(e){return []}}
+function saveShop(arr){try{localStorage.setItem(SHOP_KEY,JSON.stringify(arr))}catch(e){}}
+let shopList=loadShop(); // [{name, done, cat}]
+
+// Clasificación simple por categoría para ordenar la lista
+function catOf(name){
+  const n=name.toLowerCase();
+  if(/pollo|atún|atun|bonito|sardina|calamar|salmón|salmon|merluza|huevo|clara|pavo|whey|bacon/.test(n))return "Proteínas";
+  if(/yogur|oikos|cottage|queso|kombucha/.test(n))return "Lácteos y fermentados";
+  if(/brócoli|brocoli|judía|judia|guisante|espinaca|rúcula|rucula|tomate|aguacate|maíz|maiz|remolacha|batata|boniato/.test(n))return "Verduras y frutas";
+  if(/fresa|lino/.test(n))return "Verduras y frutas";
+  if(/pan|tortilla|masa madre/.test(n))return "Panes y cereales";
+  if(/aceite/.test(n))return "Despensa";
+  return "Otros";
+}
+// extrae el ingrediente base quitando cantidades entre paréntesis y duplicados
+function baseName(n){
+  return n.replace(/\s*\([^)]*\)/g,"").replace(/x?\d+\s*latas?/gi,"").replace(/\s{2,}/g," ").trim();
+}
+function generateFromWeek(){
+  const set=new Map();
+  for(let wd=0;wd<=6;wd++){
+    if(BASE[wd]==="free")continue;
+    for(const meal of ["Comida","Snack","Cena"]){
+      BASE[wd][meal].forEach(it=>{
+        const b=baseName(it.n);
+        if(b && !set.has(b.toLowerCase()))set.set(b.toLowerCase(),b);
+      });
+    }
+  }
+  const existing=new Set(shopList.map(s=>s.name.toLowerCase()));
+  set.forEach(b=>{
+    if(!existing.has(b.toLowerCase()))shopList.push({name:b,done:false,cat:catOf(b)});
+  });
+  saveShop(shopList);renderShop();
+}
+$("genShop").onclick=()=>{
+  if(shopList.some(s=>!s.done)&&!confirm("Voy a sumar los ingredientes del menú de la semana a tu lista. ¿Seguimos?"))return;
+  generateFromWeek();
+};
+$("shopAdd").onclick=()=>addShop();
+$("shopInp").addEventListener("keydown",e=>{if(e.key==="Enter")addShop()});
+function addShop(){
+  const v=$("shopInp").value.trim();if(!v)return;
+  shopList.push({name:v,done:false,cat:catOf(v)});
+  $("shopInp").value="";saveShop(shopList);renderShop();
+}
+function renderShop(){
+  const box=$("shopList");
+  if(!shopList.length){box.innerHTML=`<div class="empty">Tu lista está vacía.<br>Generala desde el menú o agregá a mano.</div>`;return}
+  // agrupar por categoría
+  const cats={};
+  shopList.forEach((s,i)=>{(cats[s.cat]=cats[s.cat]||[]).push({...s,i})});
+  const order=["Proteínas","Lácteos y fermentados","Verduras y frutas","Panes y cereales","Despensa","Otros"];
+  box.innerHTML="";
+  order.filter(c=>cats[c]).forEach(c=>{
+    const g=document.createElement("div");g.className="shop-group";
+    let rows=`<div class="shop-cat">${c}</div>`;
+    cats[c].forEach(s=>{
+      rows+=`<div class="shop-item ${s.done?"done":""}" data-shop="${s.i}"><div class="shop-chk ${s.done?"on":""}"></div><div class="shop-name">${s.name}</div><button class="shop-del" data-shopdel="${s.i}">×</button></div>`;
+    });
+    g.innerHTML=rows;box.appendChild(g);
+  });
+}
+$("shopList").addEventListener("click",e=>{
+  const del=e.target.closest("[data-shopdel]");
+  if(del){const i=+del.dataset.shopdel;shopList.splice(i,1);saveShop(shopList);renderShop();return}
+  const it=e.target.closest("[data-shop]");
+  if(it){const i=+it.dataset.shop;shopList[i].done=!shopList[i].done;saveShop(shopList);renderShop();return}
+});
+
+/* ---------- NOTES ---------- */
+const NOTES_KEY="mayte_notes_v1";
+function loadNotes(){try{$("notesArea").value=localStorage.getItem(NOTES_KEY)||""}catch(e){}}
+let notesTimer=null;
+$("notesArea").addEventListener("input",()=>{
+  clearTimeout(notesTimer);
+  notesTimer=setTimeout(()=>{
+    try{localStorage.setItem(NOTES_KEY,$("notesArea").value)}catch(e){}
+    const tag=$("savedTag");tag.classList.add("show");setTimeout(()=>tag.classList.remove("show"),1200);
+  },400);
+});
 
 render();
 </script>
